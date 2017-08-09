@@ -1,6 +1,6 @@
 # vue-music
 
-> Vue.js 打造高级实战——音乐 App
+> Vue.js 打造高级实战——音乐 App  跟着慕课网视频敲的代码
 
 ## 项目树
 ```
@@ -27,47 +27,10 @@
 │   ├── App.vue
 │   ├── api
 │   │   ├── config.js
-│   │   ├── rank.js
 │   │   ├── recommend.js
-│   │   ├── search.js
-│   │   ├── singer.js
-│   │   └── song.js
 │   ├── base
-│   │   ├── confirm
-│   │   │   └── confirm.vue
-│   │   ├── listview
-│   │   │   └── listview.vue
-│   │   ├── loading
-│   │   │   ├── loading.gif
-│   │   │   └── loading.vue
-│   │   ├── no-result
-│   │   │   ├── no-result.vue
-│   │   │   ├── no-result@2x.png
-│   │   │   └── no-result@3x.png
-│   │   ├── progress-bar
-│   │   │   └── progress-bar.vue
-│   │   ├── progress-circle
-│   │   │   └── progress-circle.vue
-│   │   ├── scroll
-│   │   │   └── scroll.vue
-│   │   ├── search-box
-│   │   │   └── search-box.vue
-│   │   ├── search-list
-│   │   │   └── search-list.vue
 │   │   ├── slider
 │   │   │   └── slider.vue
-│   │   ├── song-list
-│   │   │   ├── first@2x.png
-│   │   │   ├── first@3x.png
-│   │   │   ├── second@2x.png
-│   │   │   ├── second@3x.png
-│   │   │   ├── song-list.vue
-│   │   │   ├── third@2x.png
-│   │   │   └── third@3x.png
-│   │   ├── switches
-│   │   │   └── switches.vue
-│   │   └── top-tip
-│   │       └── top-tip.vue
 │   ├── common
 │   │   ├── fonts
 │   │   │   ├── music-icon.eot
@@ -77,14 +40,8 @@
 │   │   ├── image
 │   │   │   └── default.png
 │   │   ├── js
-│   │   │   ├── cache.js
-│   │   │   ├── config.js
 │   │   │   ├── dom.js
 │   │   │   ├── jsonp.js
-│   │   │   ├── mixin.js
-│   │   │   ├── singer.js
-│   │   │   ├── song.js
-│   │   │   └── util.js
 │   │   └── stylus
 │   │       ├── base.styl
 │   │       ├── icon.styl
@@ -93,20 +50,10 @@
 │   │       ├── reset.styl
 │   │       └── variable.styl
 │   ├── components
-│   │   ├── add-song
-│   │   │   └── add-song.vue
-│   │   ├── disc
-│   │   │   └── disc.vue
 │   │   ├── m-header
 │   │   │   ├── logo@2x.png
 │   │   │   ├── logo@3x.png
 │   │   │   └── m-header.vue
-│   │   ├── music-list
-│   │   │   └── music-list.vue
-│   │   ├── player
-│   │   │   └── player.vue
-│   │   ├── playlist
-│   │   │   └── playlist.vue
 │   │   ├── rank
 │   │   │   └── rank.vue
 │   │   ├── recommend
@@ -115,26 +62,13 @@
 │   │   │   └── search.vue
 │   │   ├── singer
 │   │   │   └── singer.vue
-│   │   ├── singer-detail
-│   │   │   └── singer-detail.vue
-│   │   ├── suggest
-│   │   │   └── suggest.vue
 │   │   ├── tab
 │   │   │   └── tab.vue
-│   │   ├── top-list
-│   │   │   └── top-list.vue
-│   │   └── user-center
-│   │       └── user-center.vue
 │   ├── main.js
 │   ├── router
 │   │   └── index.js
 │   └── store
-│       ├── actions.js
-│       ├── getters.js
 │       ├── index.js
-│       ├── mutation-types.js
-│       ├── mutations.js
-│       └── state.js
 └── static
     ├── 1.png
     ├── 2.png
@@ -143,10 +77,6 @@
     └── 5.png
 
 ```
-
-## 项目截图
-
-
 
 
 ### 安装与运行
