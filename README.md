@@ -31,6 +31,10 @@
 │   ├── base
 │   │   ├── slider
 │   │   │   └── slider.vue
+│   │   ├── loading
+│   │   │   └── loading.vue
+│   │   ├── scroll
+│   │   │   └── scroll.vue
 │   ├── common
 │   │   ├── fonts
 │   │   │   ├── music-icon.eot
