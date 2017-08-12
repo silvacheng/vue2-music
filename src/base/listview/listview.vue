@@ -26,12 +26,20 @@
         >{{item}}</li>
       </ul>
     </div>
+    <div class="list-fixed" ref="fixed">
+      <h1 class="fixed-title" v-show="fixedTitle">{{fixedTitle}}</h1>
+    </div>
+    <div class="load-container" v-show="!data.length">
+      <Loading></Loading>
+    </div>
   </scroll>
 </template>
 <script type="text/ECMAScript-6">
   import Scroll from 'base/scroll/scroll'
+  import Loading from 'base/loading/loading'
   import {getData} from 'common/js/dom'
   const NAME_HEIGHT = 18
+  const TITLE_HEIGHT = 30
 
   export default {
     created() { // 不在props data computed 里面 定义  是因为不需要监听DOM 的setter和getter 仅仅是让menthods里面的两个方法共享此数据
@@ -43,7 +51,8 @@
     data() {
       return {
         scrollY: -1,
-        currentIndex: 0
+        currentIndex: 0,
+        diff: -1
       }
     },
     props: {
@@ -57,6 +66,12 @@
         return this.data.map((item) => {
           return item.title.substr(0, 1)
         })
+      },
+      fixedTitle() {
+        if (this.scrollY > 0) {
+          return ''
+        }
+        return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
       }
     },
     methods: {
@@ -127,16 +142,26 @@
           let height2 = listHeight[i + 1]
           if (-newY >= height1 && -newY < height2) {
             this.currentIndex = i
-            // console.log(this.currentIndex)
+            this.diff = height2 + newY
             return
           }
           // 滚动到底部， 且-newY大于最后一个元素的上限
           this.currentIndex = listHeight.length - 2
         }
+      },
+      diff(newVal) {
+        let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
+        if (this.fixedTop === fixedTop) {
+          return
+        }
+        // console.log('距离下一个标题还有：' + fixedTop + 'px')
+        this.fixedTop = fixedTop
+        this.$refs.fixed.style.transform = `translated3d(0,${fixedTop}px,0)`
       }
     },
     components: {
-      Scroll
+      Scroll,
+      Loading
     }
   }
 </script>
@@ -191,7 +216,7 @@
           color: $color-theme
     .list-fixed
       position: absolute
-      top: 0
+      top: -1px
       left: 0
       width: 100%
       .fixed-title
