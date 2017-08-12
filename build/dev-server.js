@@ -22,7 +22,7 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
-
+// 创建一个代理
 var apiRoutes = express.Router()
 
 apiRoutes.get('/getDiscList', function (req, res) {
@@ -35,6 +35,7 @@ apiRoutes.get('/getDiscList', function (req, res) {
     params: req.query
   }).then((response) => {
     res.json(response.data)
+    console.log(response.data)
   }).catch((e) => {
     console.log(e)
   })

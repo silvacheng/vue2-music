@@ -16,11 +16,11 @@
         type: Boolean,
         default: true
       },
-      listenscroll: { // 监听
+      listenScroll: { // 监听
         type: Boolean,
         default: false
       },
-      data: {
+      data: { // 歌单列表数据
         type: Array,
         default: null
       },
@@ -53,9 +53,9 @@
           click: this.click
         })
 
-        if (this.listenscroll) { // 监听滚动
+        if (this.listenScroll) { // 监听滚动
           let self = this // 备份指针
-          this.scroll.on('scroll', (pos) => { // 触发当前实例上的事件。附加参数都会传给监听器回调
+          this.scroll.on('scroll', (pos) => { // 监听滚动事件回调
             self.$emit('scroll', pos)
           })
         }
