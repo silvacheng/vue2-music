@@ -1,6 +1,7 @@
 <template>
   <div class="singer" ref="singers">
-    <Listview :data="singers"></Listview>
+    <Listview :data="singers" @select="selectSinger"></Listview>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -9,6 +10,7 @@
   import {ERR_OK} from 'api/config'
   import Singer from 'common/js/singer' // class方法
   import Listview from 'base/listview/listview'
+  import {mapMutations} from 'vuex'
 
   const HOT_NAME = '热门'
   const HOT_SINGER_LENGTH = 10
@@ -23,6 +25,13 @@
       this.__getSingerList()
     },
     methods: {
+      selectSinger(singer) {
+        console.log(singer)
+        this.$router.push({ // 路由跳转
+          path: `/singer/${singer.id}`
+        })
+        this.setSinger(singer)
+      },
       __getSingerList() {
         getSingerList().then((res) => {
           if (res.code === ERR_OK) {
@@ -71,9 +80,12 @@
         ret.sort((a, b) => {
           return a.title.charCodeAt(0) - b.title.charCodeAt(0)
         })
-        console.log(hot.concat(ret))
+        // console.log(hot.concat(ret))
         return hot.concat(ret)
-      }
+      },
+      ...mapMutations({
+        setSinger: 'SET_SINGER'
+      })
     },
     components: {
       Listview

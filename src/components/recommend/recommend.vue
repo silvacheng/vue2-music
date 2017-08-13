@@ -19,9 +19,9 @@
                 <img width="60" height="60" v-lazy="item.imgurl">
               </div>
               <div class="text">
-                <h2 class="name" v-html="item.creator.name"></h2>
-                <p class="desc" v-html="item.dissname"></p>
-              </div>
+              <h2 class="name" v-html="item.creator.name"></h2>
+              <p class="desc" v-html="item.dissname"></p>
+            </div>
             </li>
           </ul>
         </div>
