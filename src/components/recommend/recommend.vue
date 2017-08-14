@@ -49,8 +49,10 @@
       }
     },
     created() {
-      this._getRecommend()
-      this._getDiscList()
+      setTimeout(() => {
+        this._getRecommend()
+        this._getDiscList()
+      }, 1000)
     },
     methods: {
       _getRecommend() {

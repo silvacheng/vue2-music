@@ -89,17 +89,17 @@
           momentum: false,
           snap: true,
           snapLoop: this.loop,
-          snapThreshold: 0.3,
+          snapThreshold: 0.3, // 用手指滑动时页面可切换的阈值，大于这个阈值可以滑动的下一页
           snapSpeed: 400
         })
         // slider 滚动结束时触发
         this.slider.on('scrollEnd', () => {
           let pageIndex = this.slider.getCurrentPage().pageX
-          // console.log(this.slider.getCurrentPage())
           if (this.loop) {
-            // 如果为循环 需要将pageIndex -1
+            // 如果为循环 需要将pageIndex -1 （1,2,3,4,5） --> (0,1,2,3,4,5)
             pageIndex -= 1
           }
+          // console.log('当前页面索引为：' + pageIndex)
           this.currentPageIndex = pageIndex
           // 滚动结束后 调用一次_play()
           if (this.autoPlay) {
@@ -120,7 +120,7 @@
           pageIndex += 1
         }
         this.timer = setTimeout(() => {
-          this.slider.goToPage(pageIndex, 0, 400)
+          this.slider.goToPage(pageIndex, 0, 400) // 滚动到对应的页面需要400ms
         }, this.interval)
       }
     },

@@ -6,6 +6,9 @@
 </template>
 <script type="text/ECMAScript-6">
   import {mapGetters} from 'vuex'
+  import {getSingerDetail} from 'api/singer'
+  // import {createSong} from 'common/js/song'
+  import {ERR_OK} from 'api/config'
   export default {
     computed: {
       ...mapGetters([
@@ -14,6 +17,34 @@
     },
     created() {
       console.log(this.singer)
+      this._getDetail()
+    },
+    methods: {
+      _getDetail() {
+        if (!this.singer.id) {
+          this.$router.push('/singer')
+          return
+        }
+        // console.log(this.singer.id)
+        getSingerDetail(this.singer.id).then((res) => {
+          console.log(res.data.list[0])
+          if (res.code === ERR_OK) {
+            this.songs = res.data.list
+            // console.log(this.songs)
+          }
+        })
+      },
+      _normalizeSongs(list) {
+        let ret = []
+        list.forEach((item) => {
+          // let {musicData} = item
+          console.log(item)
+//          if (musicData.singerID && musicData.albummID) {
+//            ret.push(createSong(musicData))
+//          }
+        })
+        return ret
+      }
     }
   }
 </script>

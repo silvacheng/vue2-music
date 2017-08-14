@@ -46,13 +46,13 @@
       this.touch = {}
       this.listenScroll = true
       this.listHeight = []
-      this.probeType = 3
+      this.probeType = 3 // 滚动的动画过程中也会实时派发滚动事件
     },
     data() {
       return {
         scrollY: -1,
         currentIndex: 0,
-        diff: -1
+        diff: -1 // 上一个标题距离下一个标题的距离
       }
     },
     props: {
@@ -98,6 +98,7 @@
         this._scrollTo(nameIndex)
       },
       scroll(pos) {
+        // console.log(pos)
         this.scrollY = pos.y // 距离顶端的位置
       },
       _scrollTo(index) {
