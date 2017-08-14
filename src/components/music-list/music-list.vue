@@ -1,35 +1,57 @@
 <template>
   <div class="music-list">
     <div class="back">
-      <i class="icon-back"></i>
+      <i class="icon-back" @click="back"></i>
     </div>
-  </div>
-  <h1 class="title"></h1>
-  <div class="bg-image">
-    <div class="filter"></div>
+    <h1 class="title" v-html="title"></h1>
+    <div class="bg-image" :style="bgStyle" ref="bgImage">
+      <div class="filter"></div>
+    </div>
+    <scroll :data="songs" class="list" ref="list">
+      <div class="song-list-wrapper">
+        <song-list :songs="songs"></song-list>
+      </div>
+    </scroll>
   </div>
 </template>
 
-<scrript type="text/ecmascript-6">
+<script type="text/ecmascript-6">
+  import Scroll from 'base/scroll/scroll'
+  import SongList from 'base/song-list/song-list'
   export default {
     props: {
       bgImage: {
         type: String,
         default: ''
       },
-      bgImage: {
+      songs: {
+        type: Array,
+        default: []
+      },
+      title: {
         type: String,
         default: ''
-      },
-      bgImage: {
-        type: String,
-        default: ''
-      },
-
+      }
+    },
+    methods: {
+      back() {
+        this.$router.back()
+      }
+    },
+    computed: {
+      bgStyle() {
+        return `background-image:url(${this.bgImage})`
+      }
+    },
+    mounted() {
+      this.$refs.list.$el.style.top = `${this.$refs.bgImage.clientHeight}px`
+    },
+    components: {
+      Scroll,
+      SongList
     }
   }
-
-</scrript>
+</script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"

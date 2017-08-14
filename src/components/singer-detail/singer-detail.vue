@@ -1,10 +1,11 @@
 <template>
   <transition name="slide">
-    <div class="singer-detail"></div>
+    <MusicList :songs="songs" :title="title" :bg-image="bgImage"></MusicList>
   </transition>
 
 </template>
 <script type="text/ECMAScript-6">
+  import MusicList from 'components/music-list/music-list'
   import {mapGetters} from 'vuex'
   import {getSingerDetail} from 'api/singer'
   import {createSong} from 'common/js/song'
@@ -16,6 +17,12 @@
       }
     },
     computed: {
+      title() {
+        return this.singer.name
+      },
+      bgImage() {
+        return this.singer.avatar
+      },
       ...mapGetters([
         'singer'
       ])
@@ -46,6 +53,9 @@
         })
         return ret
       }
+    },
+    components: {
+      MusicList
     }
   }
 </script>
