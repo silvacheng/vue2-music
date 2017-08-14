@@ -1,11 +1,3 @@
-// export function createSong(musicData) {
-//   return new Song({
-//     id: musicData.singerID,
-//     mid: musicData.singerMID,
-//     singer: musicData.singerName,
-//     name:
-//   })
-// }
 export default class Song {
   constructor({id, mid, singer, name, album, duration, image, url}) {
     this.id = id
@@ -18,7 +10,7 @@ export default class Song {
     this.url = url
   }
 }
-
+// 抽象出来工厂方法
 export function createSong(musicData) {
   return new Song({
     id: musicData.songid,
