@@ -2,7 +2,8 @@
 // 状态
 
 const state = {
-  singer: {}
+  singer: {},
+  topList: {}
 }
 
 export default state

@@ -1,11 +1,38 @@
 <template>
-  <div>
-    搜索页面
+  <div class="search">
+    <div class="search-box-wrapper">
+      <search-box></search-box>
+    </div>
   </div>
 </template>
 
 <script>
-  export default {}
+  import SearchBox from 'base/search-box/search-box'
+  import {getHotKey} from 'api/search'
+  import {ERR_OK} from 'api/config'
+  export default {
+    props: {},
+    data() {
+      return {
+        hotKey: []
+      }
+    },
+    created() {
+      this._getHotKey()
+    },
+    methods: {
+      _getHotKey() {
+        getHotKey().then((res) => {
+          if (res.code === ERR_OK) {
+            this.hotKey = res.data.hotkey.slice(0, 10)
+          }
+        })
+      }
+    },
+    components: {
+      SearchBox
+    }
+  }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

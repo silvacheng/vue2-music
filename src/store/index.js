@@ -15,7 +15,7 @@ import cerateLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
 
-const debug = process.env.NODE_ENV !== 'production'
+const debug = process.env.NODE_ENV !== 'production' // 非生产环境打开debug
 
 export default new Vuex.Store({
   actions,
