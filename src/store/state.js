@@ -1,9 +1,15 @@
+import {playMode} from 'common/js/config'
 
 // 状态
-
 const state = {
-  singer: {},
-  topList: {}
+  singer: {}, // 歌手
+  topList: {}, // 排行歌曲
+  playing: false, // 播放器状态  播放、停止
+  fullScreen: false, // 播放器  全屏
+  playList: [], // 播放列表
+  sequenceList: [], // 播放顺序列表
+  mode: playMode.sequence, // 播放模式
+  currentIndex: -1 // 当前播放歌曲索引
 }
 
 export default state
