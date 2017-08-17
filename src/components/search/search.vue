@@ -8,10 +8,10 @@
 
 <script>
   import SearchBox from 'base/search-box/search-box'
+  import Loading from 'base/loading/loading'
   import {getHotKey} from 'api/search'
   import {ERR_OK} from 'api/config'
   export default {
-    props: {},
     data() {
       return {
         hotKey: []
@@ -30,7 +30,8 @@
       }
     },
     components: {
-      SearchBox
+      SearchBox,
+      Loading
     }
   }
 </script>

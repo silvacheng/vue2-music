@@ -18,3 +18,15 @@ export const options = {
 }
 
 export const ERR_OK = 0
+
+// 拼装ajax请求数据
+export function parseParam(obj) {
+  if (!(obj instanceof Object)) {
+    return false
+  }
+  let ObjStr = ''
+  for (let k in obj) {
+    ObjStr += k + '=' + obj[k] + '&'
+  }
+  return ObjStr.substr(0, ObjStr.length - 1)
+}

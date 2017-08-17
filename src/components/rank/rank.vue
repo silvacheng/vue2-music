@@ -18,14 +18,16 @@
         <Loading></Loading>
       </div>
     </scroll>
+    <router-view></router-view>
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import Scroll from 'base/scroll/scroll'
   import Loading from 'base/loading/loading'
   import {getTopList} from 'api/rank'
   import {ERR_OK} from 'api/config'
+  import {mapMutations} from 'vuex'
 
   export default {
     data() {
@@ -39,8 +41,9 @@
     methods: {
       selectItem(item) {
         this.$router.push({
-          path: `rank/${item.id}`
+          path: `/rank/${item.id}`
         })
+        this.setTopList(item)
       },
       _getTopList() {
         getTopList().then((res) => {
@@ -48,7 +51,10 @@
             this.topList = res.data.topList
           }
         })
-      }
+      },
+      ...mapMutations({
+        setTopList: 'SET_TOP_LIST'
+      })
     },
     components: {
       Scroll,
