@@ -1,7 +1,7 @@
 <template>
   <div class="song-list">
     <ul>
-      <li v-for="(song, index) in songs" class="item">
+      <li @click="selectItem(song, index)" v-for="(song, index) in songs" class="item">
         <div class="rank" v-show="rank">
           <span :class="getRankClass(index)" v-text="getRankText(index)"></span>
         </div>
@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   export default {
     props: {
       songs: {
@@ -41,6 +41,9 @@
         if (index > 2) {
           return index + 1
         }
+      },
+      selectItem(item, index) {
+        this.$emit('select', item, index)
       }
     }
   }
