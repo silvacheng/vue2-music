@@ -30,6 +30,7 @@
   import SongList from 'base/song-list/song-list'
   import Loading from 'base/loading/loading'
   import {prefixStyle} from 'common/js/dom'
+  import {mapActions} from 'vuex'
 
   const MARGIN_TOP_HEIGHT = 40
   const transform = prefixStyle('transform')
@@ -81,8 +82,14 @@
         this.scrollY = pos.y
       },
       selectItem(item, index) {
-
-      }
+        this.selectPlay({
+          list: this.songs,
+          index
+        })
+      },
+      ...mapActions([ // 通过vuex语法糖 来调用selectPlay方法
+        'selectPlay'
+      ])
     },
     watch: {
       scrollY(newY) { // 限制最大滚动距离
