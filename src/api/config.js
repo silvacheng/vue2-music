@@ -17,6 +17,9 @@ export const options = {
   param: 'jsonpCallback'
 }
 
+export const songOption = {
+  param: 'callback'
+}
 export const ERR_OK = 0
 
 // 拼装ajax请求数据

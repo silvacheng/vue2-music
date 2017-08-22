@@ -24,6 +24,9 @@
                 <img class="image" :src="currentSong.image">
               </div>
             </div>
+            <div class="playing-lyric-wrapper">
+              <div class="playing-lyric">{{playingLyric}}</div>
+            </div>
           </div>
         </div>
         <div class="bottom">
@@ -77,7 +80,8 @@
   export default {
     data() {
       return {
-        songReady: false
+        songReady: false,
+        playingLyric: ''
       }
     },
     computed: {
@@ -190,6 +194,11 @@
       error() { // 避免网络错误 或者歌曲加载失败的情况 导致无法播放歌曲
         this.songReady = true
       },
+      getLyric() {
+        this.currentSong.getLyric().then((data) => {
+          console.log(data)
+        })
+      },
       _getPosAndScale() { // 获取小○到大○的 x y 以及 scale
         const targetWidth = 40
         const paddingLeft = 40
@@ -215,7 +224,10 @@
       currentSong() { // 当前歌曲发生变化
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
+          // 延迟1s播放歌曲
           this.$refs.audio.play()
+          // 获取歌词
+          this.getLyric()
         }, 1000)
       },
       playing(newPlaying) { // 播放状态发送变化
