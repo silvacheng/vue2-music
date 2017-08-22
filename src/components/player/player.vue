@@ -30,6 +30,13 @@
           </div>
         </div>
         <div class="bottom">
+          <div class="progress-wrapper">
+            <span class="time time-l">{{format(currentTime)}}</span>
+            <div class="progress-bar-wrapper">
+              <progress-bar :percent="percent" @percentChange="onProgressBarChange"></progress-bar>
+            </div>
+            <span class="time time-r">{{format(currentSong.duration)}}</span>
+          </div>
           <div class="operators">
             <div class="icon i-left">
               <i class="icon-sequence"></i>
@@ -67,11 +74,12 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url" @play="ready" @error="error"></audio>
+    <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="updateTime"></audio>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import ProgressBar from 'base/progress-bar/progress-bar'
   import {mapGetters, mapMutations} from 'vuex'
   import animations from 'create-keyframe-animation'
   import {prefixStyle} from 'common/js/dom'
@@ -81,6 +89,7 @@
     data() {
       return {
         songReady: false,
+        currentTime: '',
         playingLyric: ''
       }
     },
@@ -96,6 +105,9 @@
       },
       disableClass() { // 当络错误 或者歌曲加载失败的情况 上下曲及播放按钮置为灰色
         return this.songReady ? '' : 'disable'
+      },
+      percent() { // 歌曲进度播放的百分比
+        return this.currentTime / this.currentSong.duration
       },
       ...mapGetters([ // 从vuex里获取状态
         'fullScreen', // 全屏
@@ -194,10 +206,30 @@
       error() { // 避免网络错误 或者歌曲加载失败的情况 导致无法播放歌曲
         this.songReady = true
       },
+      updateTime(e) {
+        this.currentTime = e.target.currentTime
+      },
       getLyric() {
         this.currentSong.getLyric().then((data) => {
           console.log(data)
         })
+      },
+      format(interval) {
+        interval = interval | 0
+        const minute = interval / 60 | 0
+        const seconds = this._padZero(interval % 60)
+//        let seconds = interval % 60
+//        if (seconds.toString().length < 2) {
+//          seconds = '0' + seconds
+//        }
+        return `${minute}:${seconds}`
+      },
+      onProgressBarChange(percent) { // 拖动滚动条改变播放进度
+        // console.log('百分比为:' + percent)
+        this.$refs.audio.currentTime = percent * this.currentSong.duration
+        if (!this.playing) {
+          this.togglePlaying()
+        }
       },
       _getPosAndScale() { // 获取小○到大○的 x y 以及 scale
         const targetWidth = 40
@@ -214,6 +246,14 @@
           scale
         }
       },
+      _padZero(num, n = 2) {
+        let len = num.toString().length
+        while (len < n) {
+          num = '0' + num
+          len++
+        }
+        return num
+      },
       ...mapMutations({ // 通过实例函数去改变vuex中的值
         setFullScreen: 'SET_FULL_SCREEN',
         setPlayingState: 'SET_PLAYING_STATE',
@@ -227,7 +267,7 @@
           // 延迟1s播放歌曲
           this.$refs.audio.play()
           // 获取歌词
-          this.getLyric()
+          // this.getLyric()
         }, 1000)
       },
       playing(newPlaying) { // 播放状态发送变化
@@ -237,6 +277,9 @@
           newPlaying ? audio.play() : audio.pause()
         })
       }
+    },
+    components: {
+      ProgressBar
     }
   }
 </script>
