@@ -39,7 +39,7 @@
           </div>
           <div class="operators">
             <div class="icon i-left">
-              <i class="icon-sequence"></i>
+              <i :class="iconMode" @click="changeMode"></i>
             </div>
             <div class="icon i-left" :class="disableClass">
               <i class="icon-prev" @click="prev"></i>
@@ -67,7 +67,9 @@
           <p class="desc" v-html="currentSong.singer"></p>
         </div>
         <div class="control">
-          <i :class="miniIcon" @click.stop="togglePlaying"></i>
+          <progress-circle :radius="radius" :percent="percent">
+            <i :class="miniIcon" @click.stop="togglePlaying" class="icon-mini"></i>
+          </progress-circle>
         </div>
         <div class="control">
           <i class="icon-playlist"></i>
@@ -80,9 +82,13 @@
 
 <script type="text/ecmascript-6">
   import ProgressBar from 'base/progress-bar/progress-bar'
+  import ProgressCircle from 'base/progress-circle/progress-circle'
   import {mapGetters, mapMutations} from 'vuex'
   import animations from 'create-keyframe-animation'
   import {prefixStyle} from 'common/js/dom'
+  import {playMode} from 'common/js/config'
+  import {shuffle} from 'common/js/util'
+
   const transform = prefixStyle('transform')
 
   export default {
@@ -90,7 +96,8 @@
       return {
         songReady: false,
         currentTime: '',
-        playingLyric: ''
+        playingLyric: '',
+        radius: 32
       }
     },
     computed: {
@@ -99,6 +106,9 @@
       },
       playIcon() {
         return this.playing ? 'icon-pause' : 'icon-play'
+      },
+      iconMode() {
+        return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
       },
       miniIcon() {
         return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
@@ -114,7 +124,9 @@
         'playList', // 歌曲列表
         'currentSong', // 当前歌曲
         'playing', // 播放状态
-        'currentIndex' // 当前播放索引
+        'currentIndex', // 当前播放索引
+        'mode',
+        'sequenceList'
       ])
     },
     methods: {
@@ -206,6 +218,25 @@
       error() { // 避免网络错误 或者歌曲加载失败的情况 导致无法播放歌曲
         this.songReady = true
       },
+      changeMode() {
+        const mode = (this.mode + 1) % 3
+        this.setPlayMode(mode)
+        let list = null
+        if (mode === playMode.random) {
+          list = shuffle(this.sequenceList)
+        } else {
+          list = this.sequenceList
+        }
+        this.resetCurrentIndex(list)
+        this.setPlayList(list)
+      },
+      resetCurrentIndex(list) {
+        let index = list.findIndex((item) => {
+          return item.id === this.currentSong.id
+        })
+        console.log('当前歌曲索引为:' + index)
+        this.setCurrentIndex(index)
+      },
       updateTime(e) {
         this.currentTime = e.target.currentTime
       },
@@ -257,11 +288,16 @@
       ...mapMutations({ // 通过实例函数去改变vuex中的值
         setFullScreen: 'SET_FULL_SCREEN',
         setPlayingState: 'SET_PLAYING_STATE',
-        setCurrentIndex: 'SET_CURRENT_INDEX'
+        setCurrentIndex: 'SET_CURRENT_INDEX',
+        setPlayMode: 'SET_PLAY_MODE',
+        setPlayList: 'SET_PLAYLIST'
       })
     },
     watch: {
-      currentSong() { // 当前歌曲发生变化
+      currentSong(newSong, oldSong) { // 当前歌曲发生变化
+        if (newSong.id === oldSong.id) {
+          return
+        }
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           // 延迟1s播放歌曲
@@ -279,13 +315,17 @@
       }
     },
     components: {
-      ProgressBar
+      ProgressBar,
+      ProgressCircle
     }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
+
   @import "~common/stylus/variable"
   @import "~common/stylus/mixin"
 
