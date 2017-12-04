@@ -13,13 +13,14 @@
       </div>
       <div class="no-result-wrapper">
         <no-result :title="noResultDesc"></no-result>
-      </div>
+      </div>    
     </div>
   </transition>
 </template>
 <script type="text/ECMAScript-6">
   import Switches from 'base/switches/switches'
   import NoResult from 'base/no-result/no-result'
+  import Confirm from 'base/confirm/confirm'
   export default {
     computed: {
       noResultDesc() {
@@ -40,7 +41,8 @@
           {
             name: '最近听的'
           }
-        ]
+        ],
+        text: '搜索。。。。'
       }
     },
     methods: {
@@ -53,7 +55,8 @@
     },
     components: {
       Switches,
-      NoResult
+      NoResult,
+      Confirm
     }
   }
 </script>

@@ -47,7 +47,6 @@
         if (!this.$refs.wrapper) { // 如果组件还没被渲染的时候  不能初始化scroll组件
           return
         }
-
         this.scroll = new BScroll(this.$refs.wrapper, {
           probeType: this.probeType,
           click: this.click

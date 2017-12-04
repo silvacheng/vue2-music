@@ -15,7 +15,6 @@ export function shuffle(arr) {
   for (let i = _arr.length - 1; i >= 0; i--) {
     let randomIndex = Math.floor(Math.random() * (i + 1)) // 取随机数
     let itemAtIndex = _arr[randomIndex] // 取数组中此随机数的值
-
     _arr[randomIndex] = _arr[i] // 将数组最后一个值赋给随机的索引值
     _arr[i] = itemAtIndex //  将数组最后的值换成次随机数的值
   }
