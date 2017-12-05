@@ -42,6 +42,4 @@
       &.active
         background-color: $color-highlight-background
         color: $color-text
-
-
 </style>
