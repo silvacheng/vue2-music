@@ -80,6 +80,7 @@
       },
       onShortCutTouchStart(e) {
         let nameIndex = getData(e.target, 'index')
+        // console.log(nameIndex)
         let firstTouch = e.touches[0]
         // 开始的位置
         this.touch.y1 = firstTouch.pageY
@@ -124,6 +125,7 @@
           height += item.clientHeight
           this.listHeight.push(height)
         }
+        console.log(this.listHeight)
       }
     },
     watch: {
@@ -134,7 +136,7 @@
       },
       scrollY(newY) {
         const listHeight = this.listHeight
-        // console.log(newY) 向下滑动newY的值 均为负值
+        // console.log(listHeight) // 向下滑动newY的值 均为负值
         // 当滚动到顶部 newY>0
         if (newY > 0) {
           this.currentIndex = 0

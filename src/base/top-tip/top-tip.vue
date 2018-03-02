@@ -17,7 +17,7 @@
     data() {
       return {
         showFlag: false
-      } 
+      }
     },
     methods: {
       show() {
