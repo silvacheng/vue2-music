@@ -16,6 +16,7 @@
 
 <script>
   import SearchBox from 'base/search-box/search-box'
+  // import SearchList from 'base/search-box/search-list'
   import Loading from 'base/loading/loading'
   import {getHotKey} from 'api/search'
   import {ERR_OK} from 'api/config'
