@@ -31,8 +31,9 @@
   import {search} from 'api/search'
   import {ERR_OK} from 'api/config'
   import {createSong} from 'common/js/song'
-  import Singer from 'common/js/singer'
   import {mapMutations, mapActions} from 'vuex'
+  import Singer from 'common/js/singer'
+
   const TYPE_SINGER = 'singer'
   const perpage = 20
 
@@ -57,6 +58,9 @@
       }
     },
     methods: {
+      refresh() {
+        this.$refs.suggest.refresh()
+      },
       search() {
         this.page = 1
         this.hasMore = true
@@ -84,6 +88,7 @@
         this.$emit('listScroll')
       },
       selectItem(item) {
+        console.log(item)
         if (item.type === TYPE_SINGER) {
           const singer = new Singer({
             id: item.singermid,

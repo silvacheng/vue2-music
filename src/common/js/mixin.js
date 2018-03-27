@@ -1,6 +1,6 @@
 
 // import {mapMutations, mapActions, mapGetters} from 'vuex'
-import {mapMutations, mapGetters} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 // import {playMode} from 'commom/js/config'
 // import {shuffle} from 'common/js/util'
 
@@ -47,13 +47,14 @@ export const searchMixin = {
       this.$refs.searchBox.blur()
     },
     addQuery(query) {
+      console.log('addQuery ===> ' + query)
       this.$refs.searchBox.setQuery(query)
     },
     saveSearch() {
-      console.log('要保存的搜索记录' + this.query)
+      console.log('要保存的搜索记录 ==> ' + this.query)
       this.saveSearchHistory(this.query)
     },
-    ...mapMutations([
+    ...mapActions([
       'saveSearchHistory',
       'deleteSearchHistory'
     ])

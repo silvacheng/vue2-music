@@ -21,7 +21,7 @@
                 <i class="icon-clear"></i>
               </span>
             </h1>
-            <search-list :searches="searchHistory" @delete="deleteSearchHistory"></search-list>
+            <search-list :searches="searchHistory" @delete="deleteSearchHistory" @select="addQuery"></search-list>
           </div>
         </div>
       </scroll>
@@ -30,6 +30,7 @@
     <div class="search-result" v-show="query" ref="searchResult">
       <suggest ref="suggest" :query="query" @listScroll="blurInput" @select="saveSearch"></suggest>
     </div>
+    <confirm ref="confirm" @confirm="clearSearchHistory" text="是否清空所有搜索记录" confirmBtnText="清空"></confirm>
     <router-view></router-view>
   </div>
 </template>
@@ -37,12 +38,13 @@
 <script>
   import SearchBox from 'base/search-box/search-box'
   import SearchList from 'base/search-list/search-list'
-  import Loading from 'base/loading/loading'
   import Scroll from 'base/scroll/scroll'
   import Suggest from 'components/suggest/suggest'
+  import Confirm from 'base/confirm/confirm'
   import {getHotKey} from 'api/search'
   import {ERR_OK} from 'api/config'
   import {playlistMixin, searchMixin} from 'common/js/mixin'
+  import {mapActions} from 'vuex'
   export default {
     mixins: [playlistMixin, searchMixin],
     data() {
@@ -52,14 +54,21 @@
     },
     computed: {
       shortcut() {
-        return this.hotKey
+        return this.hotKey.concat(this.searchHistory)
       }
     },
     created() {
       this._getHotKey()
     },
     methods: {
-      handlePlayList() {},
+      handlePlayList(playList) {
+        const bottom = playList.length > 0 ? '60px' : ''
+        this.$refs.searchResult.style.bottom = bottom
+        this.$refs.suggest.refresh()
+
+        this.$refs.shortcutWrapper.style.bottom = bottom
+        this.$refs.shortcut.refresh()
+      },
       _getHotKey() {
         getHotKey().then((res) => {
           if (res.code === ERR_OK) {
@@ -67,21 +76,28 @@
           }
         })
       },
-      showConfirm() {}
+      showConfirm() {
+        this.$refs.confirm.show()
+      },
+      ...mapActions([
+        'clearSearchHistory'
+      ])
     },
     wacth: {
       query(newQuery) {
         if (!newQuery) {
-
+          setTimeout(() => {
+            this.$refs.shortcut.refresh()
+          }, 20)
         }
       }
     },
     components: {
       SearchBox,
-      Loading,
       Suggest,
       Scroll,
-      SearchList
+      SearchList,
+      Confirm
     }
   }
 </script>
