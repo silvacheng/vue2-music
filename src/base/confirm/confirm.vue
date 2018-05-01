@@ -1,7 +1,7 @@
 <template>
   <transition name="confirm-fade">
-    <div class="confirm">
-      <div class="confirm-wrapper" v-show="showFlag" @click.stop>
+    <div class="confirm" v-show="showFlag" @click.stop>
+      <div class="confirm-wrapper">
         <div class="confirm-content">
           <p class="text">{{text}}</p>
           <div class="operate">
@@ -32,7 +32,7 @@
     },
     data() {
       return {
-        showFlag: true
+        showFlag: false
       }
     },
     methods: {
@@ -78,7 +78,7 @@
       .confirm-content
         width 270px
         border-radius 13px
-        background $color-hightlight-background
+        background $color-highlight-background
         .text
           padding 19px 15px
           line-height 22px
