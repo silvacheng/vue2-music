@@ -35,8 +35,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Slider from 'base/slider/slider'
   import Loading from 'base/loading/loading'
+  import Slider from 'base/slider/slider'
   import Scroll from 'base/scroll/scroll'
   import {getRecommend, getDiscList} from 'api/recommend'
   import {ERR_OK} from 'api/config'
@@ -51,8 +51,8 @@
     },
     created() {
       setTimeout(() => {
-        this._getRecommend()
         this._getDiscList()
+        this._getRecommend()
       }, 1000)
     },
     methods: {
@@ -72,12 +72,12 @@
       _getDiscList() {
         getDiscList().then((res) => {
           if (res.code === ERR_OK) {
-            // console.log(res.data.list[0])
             this.discList = res.data.list
           }
         })
       },
       loadImage() {
+        // 图片加载后  重新刷新scroll组件
         if (!this.checkLoaded) {
           this.$refs.scroll.refresh()
           this.checkLoaded = true

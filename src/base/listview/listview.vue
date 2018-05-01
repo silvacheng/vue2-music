@@ -29,7 +29,7 @@
     <div class="list-fixed" ref="fixed">
       <h1 class="fixed-title" v-show="fixedTitle">{{fixedTitle}}</h1>
     </div>
-    <div class="load-container" v-show="!data.length">
+    <div class="loading-container" v-show="!data.length">
       <Loading></Loading>
     </div>
   </scroll>
@@ -80,7 +80,7 @@
       },
       onShortCutTouchStart(e) {
         let nameIndex = getData(e.target, 'index')
-        // console.log(nameIndex)
+        // console.log(e)
         let firstTouch = e.touches[0]
         // 开始的位置
         this.touch.y1 = firstTouch.pageY
@@ -94,7 +94,7 @@
         let firstTouch = e.touches[0]
         this.touch.y2 = firstTouch.pageY
         // Y轴上的偏移
-        let delta = (this.touch.y2 - this.touch.y1) / NAME_HEIGHT | 0
+        let delta = (this.touch.y2 - this.touch.y1) / NAME_HEIGHT | 0 // 向下取整
         let nameIndex = parseInt(this.touch.nameIndex) + delta
         this._scrollTo(nameIndex)
       },
@@ -125,7 +125,7 @@
           height += item.clientHeight
           this.listHeight.push(height)
         }
-        console.log(this.listHeight)
+        // console.log(this.listHeight)
       }
     },
     watch: {
@@ -158,9 +158,10 @@
       diff(newVal) {
         let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
         if (this.fixedTop === fixedTop) {
+          // 性能优化减少dom操作
           return
         }
-        // console.log('距离下一个标题还有：' + fixedTop + 'px')
+        console.log('距离下一个标题还有：' + fixedTop + 'px')
         this.fixedTop = fixedTop
         this.$refs.fixed.style.transform = `translated3d(0,${fixedTop}px,0)`
       }

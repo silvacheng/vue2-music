@@ -6,7 +6,7 @@
   </div>
 </template>
 <script type="text/ECMAScript-6">
-  import {debounce} from 'common/js.util'
+  import {debounce} from 'common/js/util'
   export default {
     props: {
       placeholder: {

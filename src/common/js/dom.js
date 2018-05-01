@@ -2,7 +2,7 @@
  * @Author: chenghongliang
  * @Date:   2017-08-08 21:11:58
  * @Last Modified by:   chenghongliang
- * @Last Modified time: 2017-08-08 21:31:40
+ * @Last Modified time: 2018-04-30 19:55:41
  */
 
 export function addClass(el, className) {
@@ -29,6 +29,7 @@ export function getData(el, name, val) { // 获取属性前缀
   }
 }
 
+// 检测浏览器的能力
 let elementStyle = document.createElement('div').style
 let vendor = (() => {
   let transformNames = {

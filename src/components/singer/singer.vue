@@ -26,7 +26,7 @@
     },
     methods: {
       selectSinger(singer) {
-        console.log(singer)
+        // console.log(singer)
         this.$router.push({ // 路由跳转
           path: `/singer/${singer.id}`
         })
@@ -66,10 +66,12 @@
             id: item.Fsinger_mid
           }))
         })
+        // console.log(map)
         // 为了得到有序列表，要处理map
         let ret = []
         let hot = []
         for (let key in map) {
+          // 根据key去分类
           let val = map[key]
           if (val.title.match(/[a-zA-z]/)) {
             ret.push(val)
@@ -81,7 +83,6 @@
         ret.sort((a, b) => {
           return a.title.charCodeAt(0) - b.title.charCodeAt(0)
         })
-        // console.log(hot.concat(ret))
         return hot.concat(ret)
       },
       ...mapMutations({

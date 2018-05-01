@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <MusicList :songs="songs" :title="title" :bg-image="bgImage"></MusicList>
+    <music-list :songs="songs" :title="title" :bg-image="bgImage"></music-list>
   </transition>
 
 </template>
@@ -28,6 +28,7 @@
       ])
     },
     created() {
+      // console.log(this.singer)
       this._getDetail()
     },
     methods: {
@@ -38,8 +39,8 @@
         }
         getSingerDetail(this.singer.id).then((res) => {
           if (res.code === ERR_OK) {
+            // console.log(res.data.list)
             this.songs = this._normalizeSongs(res.data.list)
-            // console.log(this.songs)
           }
         })
       },

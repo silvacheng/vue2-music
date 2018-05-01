@@ -22,11 +22,11 @@
     },
     data() {
       return {
-        dashArray: Math.PI * 100
+        dashArray: Math.PI * 100 // 圆的周长
       }
     },
     computed: {
-      dashOffset() {
+      dashOffset() { // 进度偏移
         return (1 - this.percent) * this.dashArray
       }
     }

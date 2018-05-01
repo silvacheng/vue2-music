@@ -15,7 +15,7 @@
 
 <script type="text/ecmascript-6">
   import {prefixStyle} from 'common/js/dom'
-  const progressBtnWidth = 16
+  const progressBtnWidth = 16 // 按钮宽度
   const transform = prefixStyle('transform')
 
   export default {
@@ -26,7 +26,7 @@
       }
     },
     created() {
-      this.touch = {}
+      this.touch = {} // touch对象  用于不同回调函数之间的数据共享
     },
     methods: {
       progressTouchStart(e) {
@@ -40,7 +40,7 @@
         }
         const deltaX = e.touches[0].pageX - this.touch.startX // 拖动的偏移量
         // console.log('拖动的偏移量:' + deltaX)
-        const offsetWidth = Math.min(this.$refs.progressBar.clientWidth - progressBtnWidth, Math.max(0, this.touch.left + deltaX)) // 偏移位置
+        const offsetWidth = Math.min(this.$refs.progressBar.clientWidth - progressBtnWidth, Math.max(0, this.touch.left + deltaX)) // 偏移宽度要大于0 且不能超过progressBar的clientWidth
         // console.log('偏移:' + offsetWidth)
         this._offset(offsetWidth)
       },
@@ -51,8 +51,6 @@
       progressClick(e) { // 点击某处 切换播放百分比
         // console.log(e.offsetX)
         const rect = this.$refs.progressBar.getBoundingClientRect()
-        console.log(rect)
-        console.log(e)
         const offsetWidth = e.pageX - rect.left
         this._offset(offsetWidth)
         this._triggerPercent() // 通知外层组件当前歌曲拖动的百分比
@@ -61,7 +59,7 @@
         this.$refs.progress.style.width = `${offsetWidth}px`
         this.$refs.progressBtn.style[transform] = `translate3d(${offsetWidth}px, 0, 0)`
       },
-      _triggerPercent() {
+      _triggerPercent() { // 拖动事件造成百分比的变化  向播放器组件派发一个事件
         const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
         const percent = this.$refs.progress.clientWidth / barWidth
         this.$emit('percentChange', percent)
@@ -72,8 +70,7 @@
         if (newPercent >= 0 && !this.touch.initiated) { // 发生百分比变化 或者在未拖动的情况下
           const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
           const offsetWidth = newPercent * barWidth
-          this.$refs.progress.style.width = `${offsetWidth}px`
-          this.$refs.progressBtn.style[transform] = `translate3d(${offsetWidth}px, 0, 0)`
+          this._offset(offsetWidth)
         }
       }
     }

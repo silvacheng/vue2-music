@@ -76,13 +76,13 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="updateTime"></audio>
+    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import ProgressBar from 'base/progress-bar/progress-bar'
-  import ProgressCircle from 'base/progress-circle/progress-circle'
+  import ProgressBar from 'base/progress-bar/progress-bar' // normal播放器中的进度条
+  import ProgressCircle from 'base/progress-circle/progress-circle' // mini播放器中的进度条
   import {mapGetters, mapMutations} from 'vuex'
   import animations from 'create-keyframe-animation'
   import {prefixStyle} from 'common/js/dom'
@@ -94,7 +94,7 @@
   export default {
     data() {
       return {
-        songReady: false,
+        songReady: false, // 歌曲是否可以播放的状态符
         currentTime: '',
         playingLyric: '',
         radius: 32
@@ -125,8 +125,8 @@
         'currentSong', // 当前歌曲
         'playing', // 播放状态
         'currentIndex', // 当前播放索引
-        'mode',
-        'sequenceList'
+        'mode', // 播放模式
+        'sequenceList' // 顺序播放歌单
       ])
     },
     methods: {
@@ -136,8 +136,9 @@
       open() { // 在vuex中设置全屏为true
         this.setFullScreen(true)
       },
-      enter(el, done) {
+      enter(el, done) { // done 回调函数
         const {x, y, scale} = this._getPosAndScale()
+        // console.log({x, y, scale})
         let animation = {
           0: {
             transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`
@@ -166,8 +167,9 @@
       leave(el, done) { // 这里仅仅是从大的图片缩小到下面  不需要用框架 仅仅需要css3属性即可
         this.$refs.cdWrapper.style.transition = 'all 0.4s'
         const {x, y, scale} = this._getPosAndScale()
+        // console.log({x, y, scale})
         this.$refs.cdWrapper.style[transform] = `translate3d(${x}px, ${y}px, 0) scale(${scale})`
-        // cdWrapper监听一个transitionend的时间
+        // cdWrapper监听一个transitionend的事件
         this.$refs.cdWrapper.addEventListener('transitionend', done)
       },
       afterLeave() {
@@ -179,6 +181,17 @@
           return
         }
         this.setPlayingState(!this.playing) // 设置vuex mapMutations的值
+      },
+      end () {
+        if (this.mode === playMode.loop) {
+          this.loop()
+        } else {
+          this.next()
+        }
+      },
+      loop () {
+        this.$refs.audio.currentTime = 0
+        this.$refs.audio.play()
       },
       next() { // 下一曲
         if (!this.songReady) {
@@ -215,10 +228,10 @@
       ready() { // 歌曲加载完成可以播放
         this.songReady = true
       },
-      error() { // 避免网络错误 或者歌曲加载失败的情况 导致无法播放歌曲
+      error() { // 避免网络错误 或者歌曲加载失败的情况 导致无法通过按钮去切换播放歌曲
         this.songReady = true
       },
-      changeMode() {
+      changeMode() { // 修改播放模式 就是修改播放列表
         const mode = (this.mode + 1) % 3
         this.setPlayMode(mode)
         let list = null
@@ -227,6 +240,7 @@
         } else {
           list = this.sequenceList
         }
+        // 当前歌单顺序已经改变  所以当前歌曲的index已经发生变化  要重新设置currentIndex
         this.resetCurrentIndex(list)
         this.setPlayList(list)
       },
@@ -234,7 +248,7 @@
         let index = list.findIndex((item) => {
           return item.id === this.currentSong.id
         })
-        console.log('当前歌曲索引为:' + index)
+        // console.log('当前歌曲索引为:' + index)
         this.setCurrentIndex(index)
       },
       updateTime(e) {
@@ -242,11 +256,11 @@
       },
       getLyric() {
         this.currentSong.getLyric().then((data) => {
-          console.log(data)
+//          console.log(data)
         })
       },
       format(interval) {
-        interval = interval | 0
+        interval = interval | 0 // 正数的向下取整
         const minute = interval / 60 | 0
         const seconds = this._padZero(interval % 60)
 //        let seconds = interval % 60
@@ -295,7 +309,7 @@
     },
     watch: {
       currentSong(newSong, oldSong) { // 当前歌曲发生变化
-        if (newSong.id === oldSong.id) {
+        if (newSong.id === oldSong.id) { // 切换播放模式的时候  歌曲未发生变化 不进行操作
           return
         }
         clearTimeout(this.timer)
@@ -303,7 +317,7 @@
           // 延迟1s播放歌曲
           this.$refs.audio.play()
           // 获取歌词
-          // this.getLyric()
+          this.getLyric()
         }, 1000)
       },
       playing(newPlaying) { // 播放状态发送变化

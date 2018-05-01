@@ -1,18 +1,23 @@
-import {commonParams, options, songOption} from './config'
-import jsonp from 'common/js/jsonp'
+// import {commonParams, options, songOption} from './config'
+import {commonParams} from './config'
+// import jsonp from 'common/js/jsonp'
+import axios from 'axios'
 
 export function getLyric(mid) {
-  const url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
+  const url = 'api/lyric'
   const data = Object.assign({}, commonParams, {
     songmid: mid,
     pcachetime: +new Date(),
-    loginUin: 0,
-    hostUin: 0,
     platform: 'yqq',
+    hostUin: 0,
+    // loginUin: 3086241195,
     needNewCode: 0,
-    inCharset: 'utf8'
+    g_tk: 1081804546,
+    format: 'json'
   })
-  return jsonp(url, data, {
-    options, songOption
+  return axios.get(url, {
+    params: data
+  }).then((res) => {
+    return Promise.resolve(res.data)
   })
 }

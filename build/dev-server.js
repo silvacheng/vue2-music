@@ -26,6 +26,7 @@ var app = express()
 var apiRoutes = express.Router()
 
 apiRoutes.get('/getDiscList', function (req, res) {
+  console.log(req)
   var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
   axios.get(url, {
     headers: {
@@ -55,6 +56,7 @@ apiRoutes.get('/lyric', function (req, res) {
     if (typeof ret === 'string') {
       var reg = /^\w+\(({[^()]+})\)$/
       var matches = ret.match(reg)
+      // console.log(matches)
       if (matches) {
         ret = JSON.parse(matches[1])
       }
