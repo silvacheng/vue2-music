@@ -102,6 +102,9 @@
         // console.log(pos)
         this.scrollY = pos.y // 距离顶端的位置
       },
+      refresh() {
+        this.$refs.listview.refresh()
+      },
       _scrollTo(index) {
         if (!index && index !== 0) {
           return

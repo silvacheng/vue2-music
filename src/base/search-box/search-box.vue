@@ -7,10 +7,6 @@
 </template>
 <script type="text/ECMAScript-6">
   import {debounce} from 'common/js/util'
-<<<<<<< HEAD
-=======
-  
->>>>>>> c64b9c492ca907158940214baa997cddb8dcea3d
   export default {
     props: {
       placeholder: {

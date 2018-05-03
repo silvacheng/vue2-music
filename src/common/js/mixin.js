@@ -1,9 +1,6 @@
 
-// import {mapMutations, mapActions, mapGetters} from 'vuex'
 import {mapActions, mapGetters} from 'vuex'
-// import {playMode} from 'commom/js/config'
-// import {shuffle} from 'common/js/util'
-
+// 多个组件中需要公用的方法
 export const playlistMixin = {
   computed: {
     ...mapGetters([
@@ -22,7 +19,7 @@ export const playlistMixin = {
     }
   },
   methods: {
-    handlePlayList() {
+    handlePlayList(newVal) { // 组件中必须定义 handlePlayList的方法
       throw new Error('component must implement handlePlaylist method')
     }
   }

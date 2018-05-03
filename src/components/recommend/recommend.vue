@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" ref="recommend">
     <scroll class="recommend-content" ref="scroll" :data="discList">
       <div>
         <div v-if="recommends.length" class="slider-wrapper">
@@ -39,9 +39,11 @@
   import Slider from 'base/slider/slider'
   import Scroll from 'base/scroll/scroll'
   import {getRecommend, getDiscList} from 'api/recommend'
+  import {playlistMixin} from 'common/js/mixin'
   import {ERR_OK} from 'api/config'
 
   export default {
+    mixins: [playlistMixin],
     data() {
       return {
         // 当recommends 有数据的时候再去渲染轮播图组件
@@ -56,6 +58,11 @@
       }, 1000)
     },
     methods: {
+      handlePlayList(playlist) {
+        const bottom = playlist.length > 0 ? '60px' : ''
+        this.$refs.recommend.style.bottom = bottom
+        this.$refs.scroll.refresh()
+      },
       selectItem(item) {
         this.$router.push({
           path: `/recommend/${item.dissid}`

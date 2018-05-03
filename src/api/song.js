@@ -1,6 +1,5 @@
 // import {commonParams, options, songOption} from './config'
 import {commonParams} from './config'
-// import jsonp from 'common/js/jsonp'
 import axios from 'axios'
 
 export function getLyric(mid) {

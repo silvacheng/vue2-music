@@ -14,7 +14,8 @@
       <div class="filter" ref="filter"></div>
     </div>
     <div class="bg-layer" ref="layer"></div>
-    <scroll @scroll="scroll" :data="songs" :probe-type="probeType" :listen-scroll="listenScroll" class="list" ref="list">
+    <scroll @scroll="scroll" :data="songs" :probe-type="probeType" :listen-scroll="listenScroll" class="list"
+            ref="list">
       <div class="song-list-wrapper">
         <song-list :songs="songs" :rank="rank" @select="selectItem"></song-list>
       </div>
@@ -31,12 +32,14 @@
   import Loading from 'base/loading/loading'
   import {prefixStyle} from 'common/js/dom'
   import {mapActions} from 'vuex'
+  import {playlistMixin} from 'common/js/mixin'
 
   const MARGIN_TOP_HEIGHT = 40
   const transform = prefixStyle('transform')
   const backdrop = prefixStyle('backdrop-filter')
 
   export default {
+    mixins: [playlistMixin],
     props: {
       bgImage: {
         type: String,
@@ -75,6 +78,11 @@
       this.$refs.list.$el.style.top = `${this.$refs.bgImage.clientHeight}px`
     },
     methods: {
+      handlePlayList(playlist) { // 当有列表时  将scroll组件的bottom值设为mini播放器的高度值
+        const bottom = playlist.length > 0 ? '60px' : ''
+        this.$refs.list.$el.style.bottom = bottom
+        this.$refs.list.refresh()
+      },
       back() {
         this.$router.back()
       },
@@ -87,7 +95,7 @@
           index
         })
       },
-      random () {
+      random() {
         this.randomPlay({
           list: this.songs
         })

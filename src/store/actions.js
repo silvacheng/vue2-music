@@ -1,14 +1,10 @@
 // 异步操作 修改 mutation进行封装
 import * as types from './mutation-types'
-<<<<<<< HEAD
+
 import {playMode} from '../common/js/config'
 import {shuffle} from '../common/js/util'
 
-=======
-import {playMode} from 'common/js/config'
-import {shuffle} from 'common/js/util'
 import {saveSearch, deleteSearch, clearSearch} from 'common/js/cache'
->>>>>>> c64b9c492ca907158940214baa997cddb8dcea3d
 function findIndex(list, song) {
   return list.findIndex((item) => {
     return item.id === song.id
@@ -29,12 +25,6 @@ export const selectPlay = function ({commit, state}, {list, index}) {
   commit(types.SET_PLAYING_STATE, true)
 }
 
-<<<<<<< HEAD
-export const randomPlay = function ({commit}, {list}) {
-  commit(types.SET_PLAY_MODE, playMode.random)
-  commit(types.SET_SEQUENCE_LIST, list)
-  let randomList = shuffle(list) // 随机播放列表
-=======
 export const insertSong = function({commit, state}, song) {
   // console.log(state)
   // console.log(song)
@@ -83,14 +73,11 @@ export const randomPlay = function({commit}, {list}) {
   commit(types.SET_PLAY_MODE, playMode.random)
   commit(types.SET_SEQUENCE_LIST, list)
   let randomList = shuffle(list)
->>>>>>> c64b9c492ca907158940214baa997cddb8dcea3d
   commit(types.SET_PLAYLIST, randomList)
   commit(types.SET_CURRENT_INDEX, 0)
   commit(types.SET_FULL_SCREEN, true)
   commit(types.SET_PLAYING_STATE, true)
 }
-<<<<<<< HEAD
-=======
 
 export const saveSearchHistory = function ({commit}, query) {
   console.log('action里面query ==> ' + query)
@@ -104,4 +91,4 @@ export const clearSearchHistory = function ({commit}, query) {
 export const deleteSearchHistory = function ({commit}, query) {
   commit(types.SET_SEARCH_HISTORY, deleteSearch(query))
 }
->>>>>>> c64b9c492ca907158940214baa997cddb8dcea3d
+
