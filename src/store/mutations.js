@@ -1,4 +1,3 @@
-
 // 变化
 import * as types from './mutation-types'
 
@@ -29,6 +28,9 @@ const mutations = {
   },
   [types.SET_SEARCH_HISTORY](state, history) {
     state.searchHistory = history
+  },
+  [types.SET_DISC](state, disc) {
+    state.disc = disc
   }
 }
 export default mutations
