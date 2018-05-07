@@ -1,5 +1,5 @@
 <template>
-  <div class="rank">
+  <div class="rank" ref="rank">
     <scroll class="toplist" :data="topList" ref="toplist">
       <ul>
         <li class="item" v-for="item in topList" @click="selectItem(item)">
@@ -28,8 +28,9 @@
   import {getTopList} from 'api/rank'
   import {ERR_OK} from 'api/config'
   import {mapMutations} from 'vuex'
-
+  import {playlistMixin} from 'common/js/mixin'
   export default {
+    mixins: [playlistMixin],
     data() {
       return {
         topList: []
@@ -43,7 +44,13 @@
         this.$router.push({
           path: `/rank/${item.id}`
         })
+        // 在vuex中设置topList
         this.setTopList(item)
+      },
+      handlePlayList(playlist) {
+        const bottom = playlist.length > 0 ? '60px' : ''
+        this.$refs.rank.style.bottom = bottom
+        this.$refs.toplist.refresh()
       },
       _getTopList() {
         getTopList().then((res) => {

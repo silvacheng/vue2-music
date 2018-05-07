@@ -59,7 +59,7 @@
           })
         }
 
-        if (this.pullup) {
+        if (this.pullup) { // 快滚动到底部的时候派发事件
           this.scroll.on('scrollEnd', () => {
             if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
               this.$emit('scrollToEnd')

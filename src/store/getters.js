@@ -1,6 +1,7 @@
 
 // 获取状态
 export const singer = state => state.singer
+// 排行榜数据
 export const topList = state => state.topList
 
 // 播放器状态

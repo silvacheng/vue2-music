@@ -37,7 +37,8 @@
     methods: {
       _getMusicList() {
         if (!this.topList.id) {
-          return false
+          this.$router.push('/rank')
+          return
         }
         getMusicList(this.topList.id).then((res) => {
           if (res.code === ERR_OK) {
@@ -46,14 +47,14 @@
         })
       },
       _normalizeSongs(list) {
-        let songsArr = []
+        let ret = []
         list.forEach((item) => {
           const musicData = item.data
           if (musicData.songid && musicData.albummid) {
-            songsArr.push(createSong(musicData))
+            ret.push(createSong(musicData))
           }
         })
-        return songsArr
+        return ret
       }
     },
     components: {

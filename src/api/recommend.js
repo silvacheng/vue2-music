@@ -51,7 +51,6 @@ export function getSongList(disstid) {
     platform: 'yqq',
     hostUin: 0,
     needNewCode: 1,
-    // jsonpCallback: 'playlistinfoCallback',
     g_tk: 711152585
   })
   return jsonp(url, data, options)

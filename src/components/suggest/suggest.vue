@@ -35,7 +35,7 @@
   import Singer from 'common/js/singer'
 
   const TYPE_SINGER = 'singer'
-  const perpage = 20
+  const perpage = 15
 
   export default {
     props: {
@@ -63,11 +63,12 @@
       },
       search() {
         this.page = 1
-        this.hasMore = true
-        this.$refs.suggest.scrollTo(0, 0)
+        this.hasMore = true // 搜索有结果后才能去上拉刷新
+        this.$refs.suggest.scrollTo(0, 0) // 第一次触发search事件时需要将scroll位置重置
         search(this.query, this.page, this.showSinger, perpage).then((res) => {
           if (res.code === ERR_OK) {
             this.result = this._genResult(res.data)
+            // 检测当前加载的列表是否已经全部加载  若加载完成则把标志位置为false
             this._checkMore(res.data)
           }
         })
@@ -79,7 +80,9 @@
         this.page++
         search(this.query, this.page, this.showSinger, perpage).then((res) => {
           if (res.code === ERR_OK) {
+            // 拼接新获取的数组数据到当前的数组中
             this.result = this.result.concat(this._genResult(res.data))
+            // 检测当前加载的列表是否已经全部加载  若加载完成则把标志位置为false
             this._checkMore(res.data)
           }
         })
@@ -95,10 +98,12 @@
             name: item.singername
           })
           this.$router.push({
-            path: `search/${singer.id}`
+            path: `/search/${singer.id}`
           })
+          // 操作vuex保存歌手信息  在singerDetail组件里面获取歌手信息
           this.setSinger(singer)
         } else {
+          // 在playList以及sequenceList里面添加歌曲
           this.insertSong(item)
         }
         this.$emit('select', item)
@@ -138,6 +143,7 @@
       },
       _checkMore(data) {
         const song = data.song
+        console.log(song)
         if (!song.list.length || (song.curnum + song.curpage * perpage) > song.totalnum) {
           // 歌曲总数量少
           this.hasMore = false
@@ -171,29 +177,29 @@
   .suggest
     height 100%
     overflow hidden
-    .suggest-list 
+    .suggest-list
       padding 0 30px
-      .suggest-item 
-        display flex 
-        align-items center 
+      .suggest-item
+        display flex
+        align-items center
         padding-bottom 20px
-        .icon 
+        .icon
           flex 0 0 30px
           width 30px
           [class^="icon-"]
             font-size 14px
             color $color-text-d
-        .name 
+        .name
           flex 1
           font-size $font-size-medium
           color $color-text-d
           overflow hidden
-          .text 
-            no-wrap()   
+          .text
+            no-wrap()
     .no-result-wrapper
       position absolute
       width 100%
       top 50%
-      transform translateY(-50%)        
+      transform translateY(-50%)
 
 </style>

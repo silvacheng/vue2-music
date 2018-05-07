@@ -5,6 +5,7 @@ import {playMode} from '../common/js/config'
 import {shuffle} from '../common/js/util'
 
 import {saveSearch, deleteSearch, clearSearch} from 'common/js/cache'
+
 function findIndex(list, song) {
   return list.findIndex((item) => {
     return item.id === song.id
@@ -25,10 +26,8 @@ export const selectPlay = function ({commit, state}, {list, index}) {
   commit(types.SET_PLAYING_STATE, true)
 }
 
-export const insertSong = function({commit, state}, song) {
-  // console.log(state)
-  // console.log(song)
-  console.log(state)
+export const insertSong = function ({commit, state}, song) {
+  // 不直接操作state.playList的原因 是会有vuex的警告提醒  不要在mutation的回调之外修改state中的数据
   let playList = state.playList.slice()
   let sequenceList = state.sequenceList.slice()
   let currentIndex = state.currentIndex
@@ -50,7 +49,7 @@ export const insertSong = function({commit, state}, song) {
       playList.splice(fpIndex, 1)
     }
   }
-
+  // 修改sequenceList
   let currentSIndex = findIndex(sequenceList, currentSong) + 1
   let fsIndex = findIndex(sequenceList, song)
   sequenceList.splice(currentSIndex, 0, song)
@@ -69,7 +68,7 @@ export const insertSong = function({commit, state}, song) {
   commit(types.SET_PLAYING_STATE, true)
 }
 
-export const randomPlay = function({commit}, {list}) {
+export const randomPlay = function ({commit}, {list}) {
   commit(types.SET_PLAY_MODE, playMode.random)
   commit(types.SET_SEQUENCE_LIST, list)
   let randomList = shuffle(list)

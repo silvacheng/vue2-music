@@ -1,4 +1,6 @@
 export function debounce(func, delay) {
+  // 原理是 我们对某一个函数截流 它就会返回一个新的函数  这个新的函数会延迟执行我们要调用的函数
+  // 函数截流
   let timer
   return function (...args) {
     if (timer) {

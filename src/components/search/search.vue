@@ -26,7 +26,6 @@
         </div>
       </scroll>
     </div>
-
     <div class="search-result" v-show="query" ref="searchResult">
       <suggest ref="suggest" :query="query" @listScroll="blurInput" @select="saveSearch"></suggest>
     </div>
@@ -65,7 +64,6 @@
         const bottom = playList.length > 0 ? '60px' : ''
         this.$refs.searchResult.style.bottom = bottom
         this.$refs.suggest.refresh()
-
         this.$refs.shortcutWrapper.style.bottom = bottom
         this.$refs.shortcut.refresh()
       },
@@ -115,7 +113,7 @@
       top 178px
       bottom 0
       width 100%
-      .shortcut 
+      .shortcut
         height 100%
         overflow hidden
         .hot-key
@@ -133,25 +131,25 @@
             font-size: $font-size-medium
             color: $color-text-d
         .search-history
-          position relative  
+          position relative
           margin 0 20px
-          .title 
+          .title
             display flex
             align-items center
             height 40px
             font-size $font-size-medium
             color $color-text-l
-            .text 
+            .text
               flex 1
             .clear
-              extend-click() 
-              .icon-clear 
+              extend-click()
+              .icon-clear
                 font-size: $font-size-medium
-                color: $color-text-d                   
-    .search-result 
+                color: $color-text-d
+    .search-result
       position fixed
       width 100%
       top 178px
-      bottom 0    
+      bottom 0
 
 </style>

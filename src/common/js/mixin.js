@@ -44,7 +44,7 @@ export const searchMixin = {
       this.$refs.searchBox.blur()
     },
     addQuery(query) {
-      console.log('addQuery ===> ' + query)
+      console.log('添加的搜索 ===> ' + query)
       this.$refs.searchBox.setQuery(query)
     },
     saveSearch() {
