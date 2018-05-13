@@ -1,6 +1,6 @@
 import {playMode} from 'common/js/config'
 import {loadSearch} from 'common/js/cache'
-// 状态
+// 状态   vuex中的数据除了写死  也能从本地读取一些数据
 const state = {
   singer: {}, // 歌手
   topList: {}, // 排行歌曲
@@ -10,7 +10,7 @@ const state = {
   sequenceList: [], // 播放顺序列表
   mode: playMode.sequence, // 播放模式
   currentIndex: -1, // 当前播放歌曲索引
-  searchHistory: loadSearch(),
+  searchHistory: loadSearch(), // 从本地缓存读取searchHistory
   disc: {}
 }
 

@@ -17,12 +17,14 @@ function deleteFromArray(arr, compare) {
 }
 
 function insertArray(arr, val, compare, maxlen) {
+  // compare是一个FUNC用来查找
   // 查找需要插入的数据在数组中的索引值
   const index = arr.findIndex(compare)
   // 索引值为数组的第一个  则不用改变数组的顺序
   if (index === 0) {
     return
   }
+  // 数组中已经有
   if (index > 0) {
     arr.splice(index, 1)
   }

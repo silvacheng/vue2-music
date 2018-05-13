@@ -57,10 +57,10 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/variable.styl"
-  .confirm 
+  .confirm
     position fixed
     left 0
-    top 0 
+    top 0
     right 0
     bottom 0
     z-index 998
@@ -74,7 +74,7 @@
       top 50%
       left 50%
       transform translate(-50%, -50%)
-      z-index 999 
+      z-index 999
       .confirm-content
         width 270px
         border-radius 13px
@@ -98,17 +98,17 @@
             color $color-text-d
             &.left
               border-right 1px solid $color-background-d
-  
-  @keyframes confirm-fadein 
-    0% 
+
+  @keyframes confirm-fadein
+    0%
       opacity 0
-    100% 
+    100%
       opacity 1
   @keyframes confirm-zoom
     0%
       transform scale(0)
-    50% 
+    50%
       transform scale(1.1)
     100%
-      transform scale(1)          
+      transform scale(1)
 </style>

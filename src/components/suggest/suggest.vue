@@ -58,6 +58,7 @@
       }
     },
     methods: {
+      // 让父组件调用  刷新scroll组件  进行兼容mini-player模式
       refresh() {
         this.$refs.suggest.refresh()
       },
@@ -106,6 +107,7 @@
           // 在playList以及sequenceList里面添加歌曲
           this.insertSong(item)
         }
+        // 派发select事件
         this.$emit('select', item)
       },
       getIconClass(item) {

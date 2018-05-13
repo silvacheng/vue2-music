@@ -88,11 +88,12 @@
             <i :class="miniIcon" @click.stop="togglePlaying" class="icon-mini"></i>
           </progress-circle>
         </div>
-        <div class="control">
+        <div class="control" @click.stop="showPlayList">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <playlist ref="playlist"></playlist>
     <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updateTime"
            @ended="end"></audio>
   </div>
@@ -106,12 +107,15 @@
   import animations from 'create-keyframe-animation'
   import {prefixStyle} from 'common/js/dom'
   import {playMode} from 'common/js/config'
-  import {shuffle} from 'common/js/util'
+//  import {shuffle} from 'common/js/util'
   import Lyric from 'lyric-parser'
+  import Playlist from 'components/playlist/playlist'
+  import {playerMixin} from 'common/js/mixin'
   const transform = prefixStyle('transform')
   const transitionDuration = prefixStyle('transitionDuration')
 
   export default {
+    mixins: [playerMixin],
     data() {
       return {
         songReady: false, // 歌曲是否可以播放的状态符
@@ -130,9 +134,6 @@
       playIcon() {
         return this.playing ? 'icon-pause' : 'icon-play'
       },
-      iconMode() {
-        return this.mode === playMode.sequence ? 'icon-sequence' : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
-      },
       miniIcon() {
         return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
       },
@@ -144,12 +145,8 @@
       },
       ...mapGetters([ // 从vuex里获取状态
         'fullScreen', // 全屏
-        'playList', // 歌曲列表
-        'currentSong', // 当前歌曲
         'playing', // 播放状态
-        'currentIndex', // 当前播放索引
-        'mode', // 播放模式
-        'sequenceList' // 顺序播放歌单
+        'currentIndex' // 当前播放索引
       ])
     },
     created() {
@@ -271,26 +268,6 @@
       error() { // 避免网络错误 或者歌曲加载失败的情况 导致无法通过按钮去切换播放歌曲
         this.songReady = true
       },
-      changeMode() { // 修改播放模式 就是修改播放列表
-        const mode = (this.mode + 1) % 3
-        this.setPlayMode(mode)
-        let list = null
-        if (mode === playMode.random) {
-          list = shuffle(this.sequenceList)
-        } else {
-          list = this.sequenceList
-        }
-        // 当前歌单顺序已经改变  所以当前歌曲的index已经发生变化  要重新设置currentIndex
-        this.resetCurrentIndex(list)
-        this.setPlayList(list)
-      },
-      resetCurrentIndex(list) {
-        let index = list.findIndex((item) => {
-          return item.id === this.currentSong.id
-        })
-        // console.log('当前歌曲索引为:' + index)
-        this.setCurrentIndex(index)
-      },
       updateTime(e) {
         this.currentTime = e.target.currentTime
       },
@@ -323,7 +300,8 @@
         const seconds = this._padZero(interval % 60)
         return `${minute}:${seconds}`
       },
-      onProgressBarChange(percent) { // 拖动滚动条改变播放进度
+      onProgressBarChange(percent) {
+        // 拖动滚动条改变播放进度
         // console.log('百分比为:' + percent)
         const currentTime = this.currentSong.duration * percent
         this.$refs.audio.currentTime = currentTime
@@ -395,6 +373,9 @@
         this.$refs.middleL.style.opacity = opacity
         this.$refs.middleL.style[transitionDuration] = `${time}ms`
       },
+      showPlayList() {
+        this.$refs.playlist.show()
+      },
       _getPosAndScale() { // 获取小○到大○的 x y 以及 scale
         const targetWidth = 40
         const paddingLeft = 40
@@ -428,6 +409,9 @@
     },
     watch: {
       currentSong(newSong, oldSong) { // 当前歌曲发生变化
+        if (!newSong.id) { // 删除歌曲的时候 如果歌曲列表只有一首歌  不会触发下面的操作
+          return
+        }
         if (newSong.id === oldSong.id) { // 切换播放模式的时候  歌曲未发生变化 不进行操作
           return
         }
@@ -452,7 +436,8 @@
     components: {
       ProgressBar,
       ProgressCircle,
-      Scroll
+      Scroll,
+      Playlist
     }
   }
 </script>
