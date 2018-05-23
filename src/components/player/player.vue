@@ -68,7 +68,7 @@
               <i class="icon-next" @click="next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon-not-favorite"></i>
+              <i class="icon" @click="toggleFavorite(currentSong)" :class="getFavoriteIcon(currentSong)"></i>
             </div>
           </div>
         </div>
@@ -103,11 +103,10 @@
   import ProgressBar from 'base/progress-bar/progress-bar' // normal播放器中的进度条
   import ProgressCircle from 'base/progress-circle/progress-circle' // mini播放器中的进度条
   import Scroll from 'base/scroll/scroll'
-  import {mapGetters, mapMutations} from 'vuex'
+  import {mapGetters, mapMutations, mapActions} from 'vuex'
   import animations from 'create-keyframe-animation'
   import {prefixStyle} from 'common/js/dom'
   import {playMode} from 'common/js/config'
-//  import {shuffle} from 'common/js/util'
   import Lyric from 'lyric-parser'
   import Playlist from 'components/playlist/playlist'
   import {playerMixin} from 'common/js/mixin'
@@ -264,6 +263,8 @@
       },
       ready() { // 歌曲加载完成可以播放
         this.songReady = true
+        // 保存播放历史
+        this.savePlayHistory(this.currentSong)
       },
       error() { // 避免网络错误 或者歌曲加载失败的情况 导致无法通过按钮去切换播放歌曲
         this.songReady = true
@@ -400,12 +401,11 @@
         return num
       },
       ...mapMutations({ // 通过实例函数去改变vuex中的值
-        setFullScreen: 'SET_FULL_SCREEN',
-        setPlayingState: 'SET_PLAYING_STATE',
-        setCurrentIndex: 'SET_CURRENT_INDEX',
-        setPlayMode: 'SET_PLAY_MODE',
-        setPlayList: 'SET_PLAYLIST'
-      })
+        setFullScreen: 'SET_FULL_SCREEN'
+      }),
+      ...mapActions([
+        'savePlayHistory'
+      ])
     },
     watch: {
       currentSong(newSong, oldSong) { // 当前歌曲发生变化

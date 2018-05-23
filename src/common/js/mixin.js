@@ -2,6 +2,7 @@ import {mapGetters, mapMutations, mapActions} from 'vuex'
 import {playMode} from 'common/js/config'
 import {shuffle} from 'common/js/util'
 // 多个组件中需要公用的方法
+// 播放列表
 export const playlistMixin = {
   computed: {
     ...mapGetters([
@@ -25,6 +26,7 @@ export const playlistMixin = {
     }
   }
 }
+// 搜索框
 export const searchMixin = {
   data() {
     return {
@@ -58,6 +60,7 @@ export const searchMixin = {
     ])
   }
 }
+// 播放器
 export const playerMixin = {
   computed: {
     iconMode() {
@@ -67,7 +70,8 @@ export const playerMixin = {
       'sequenceList',
       'currentSong',
       'playList',
-      'mode'
+      'mode',
+      'favoriteList'
     ])
   },
   methods: {
@@ -91,11 +95,34 @@ export const playerMixin = {
       // console.log('当前歌曲索引为:' + index)
       this.setCurrentIndex(index)
     },
+    getFavoriteIcon(song) {
+      if (this.isFavorite(song)) {
+        return 'icon-favorite'
+      }
+      return 'icon-not-favorite'
+    },
+    toggleFavorite(song) {
+      if (this.isFavorite(song)) {
+        this.deleteFavoriteList(song)
+      } else {
+        this.saveFavoriteList(song)
+      }
+    },
+    isFavorite(song) {
+      const index = this.favoriteList.findIndex((item) => {
+        return item.id === song.id
+      })
+      return index > -1
+    },
     ...mapMutations({ // 通过实例函数去改变vuex中的值
       setPlayMode: 'SET_PLAY_MODE',
       setPlayList: 'SET_PLAYLIST',
       setCurrentIndex: 'SET_CURRENT_INDEX',
       setPlayingState: 'SET_PLAYING_STATE'
-    })
+    }),
+    ...mapActions([
+      'saveFavoriteList',
+      'deleteFavoriteList'
+    ])
   }
 }

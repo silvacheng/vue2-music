@@ -46,5 +46,5 @@
     &.drop-enter-active, &.drop-leave-active
       transition all 0.3s
     &.drop-enter, &.drop-leave-to
-      transform translate3d(0, -100%, 0)      
+      transform translate3d(0, -100%, 0)
 </style>
