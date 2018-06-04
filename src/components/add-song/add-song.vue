@@ -13,7 +13,7 @@
       <div class="shortcut" v-show="!query">
         <switches :switches="switches" :currentIndex="currentIndex" @switch="switchItem"></switches>
         <div class="list-wrapper">
-          <scroll ref="songList" class="list-scroll" v-if="currentIndex===0" :data="playHistory" :refreshDelay="refreshDelay">
+          <scroll ref="songList" class="list-scroll" v-if="currentIndex===0" :data="playHistory">
             <div class="list-inner">
               <song-list :songs="playHistory" @select="selectSong"></song-list>
             </div>
@@ -28,13 +28,7 @@
       <div class="search-result" v-show="query">
         <suggest :query="query" :showSinger="showSinger" @select="selectSuggest" @listScroll="blurInput"></suggest>
       </div>
-      <top-tip ref="topTip" :delay="1500">
-        <div class="tip-title">
-          <i class="icon-ok">
-            <span class="text">1首歌曲已经添加到播放列表</span>
-          </i>
-        </div>
-      </top-tip>
+      
     </div>
   </transition>
 </template>
@@ -46,7 +40,6 @@
   import Scroll from 'base/scroll/scroll'
   import SongList from 'base/song-list/song-list'
   import SearchList from 'base/search-list/search-list'
-  import TopTip from 'base/top-tip/top-tip'
   import {searchMixin} from 'common/js/mixin'
   import {mapGetters, mapActions} from 'vuex'
   import Song from 'common/js/song'
@@ -86,7 +79,6 @@
       },
       selectSuggest() {
         this.saveSearch()
-        this.showTip()
       },
       switchItem(index) {
         this.currentIndex = index
@@ -95,11 +87,7 @@
         // 此处的song是从缓存中取的
         if (index !== 0) {
           this.insertSong(new Song(song))
-          this.showTip()
         }
-      },
-      showTip() {
-        this.$refs.topTip.show()
       },
       ...mapActions([
         'insertSong'
@@ -111,8 +99,7 @@
       Switches,
       Scroll,
       SongList,
-      SearchList,
-      TopTip
+      SearchList
     }
   }
 </script>

@@ -37,6 +37,7 @@
                 <p ref="lyricLine"
                    class="text"
                    :class="{'current': index === currentLineNum}"
+                   :key="index"
                    v-for="(line, index) in currentLyric.lines">{{line.txt}}</p>
               </div>
             </div>
@@ -94,8 +95,8 @@
       </div>
     </transition>
     <playlist ref="playlist"></playlist>
-    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updateTime"
-           @ended="end"></audio>
+    <audio ref="audio" :src="currentSong.url" @play="ready" @error="error" @timeupdate="updateTime"
+           @ended="end" ></audio>
   </div>
 </template>
 
@@ -225,8 +226,9 @@
         if (!this.songReady) {
           return
         }
-        if (this.playList.length) {
+        if (this.playList.length === 1) {
           this.loop()
+          return
         } else {
           let index = this.currentIndex + 1
           if (index === this.playList.length) {
@@ -274,6 +276,9 @@
       },
       getLyric() {
         this.currentSong.getLyric().then((lyric) => {
+          if (this.currentSong.lyric !== lyric) {
+            return
+          }
           this.currentLyric = new Lyric(lyric, this.handleLyric)
           if (this.playing) {
             this.currentLyric.play()
@@ -419,7 +424,8 @@
         if (this.currentLyric) {
           this.currentLyric.stop()
         }
-        setTimeout(() => {
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
           this.$refs.audio.play()
           // 获取歌词  song的内部封装了getLyric的方法
           this.getLyric()

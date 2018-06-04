@@ -164,7 +164,7 @@
           // 性能优化减少dom操作
           return
         }
-        console.log('距离下一个标题还有：' + fixedTop + 'px')
+        // console.log('距离下一个标题还有：' + fixedTop + 'px')
         this.fixedTop = fixedTop
         this.$refs.fixed.style.transform = `translated3d(0,${fixedTop}px,0)`
       }
